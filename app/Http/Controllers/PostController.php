@@ -21,6 +21,31 @@ class PostController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return response()->view('post.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StorePostRequest $request)
+    {
+        $post = $request->getPostInstance();
+        if(!$post->save())
+        {
+            /* Handle database storage failure here... */
+            // e.g. abort(Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        return redirect(
+            to: route('post.show', ['post' => $post->id]),
+            status: Response::HTTP_CREATED
+        );
+    }
+
+    /**
      * Display the specified resource.
      */
     public function show(Post $post)
