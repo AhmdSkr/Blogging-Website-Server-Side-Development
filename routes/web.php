@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Models\Post;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +15,4 @@ use App\Models\Post;
 |
 */
 
-Route::get('post/{id}', function($id) {
-    return response()->view('post', ['post' => Post::find($id)]);
-});
+Route::resource('post', PostController::class)->only(['index', 'create', 'store', 'show']);
