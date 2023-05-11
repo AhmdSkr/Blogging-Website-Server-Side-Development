@@ -12,6 +12,15 @@ use App\Http\Requests\UpdatePostRequest;
 class PostController extends Controller
 {
     /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $posts = Post::all();
+        return response()->view('post.index', ['posts' => $posts]);
+    }
+
+    /**
      * Display the specified resource.
      */
     public function show(Post $post)
