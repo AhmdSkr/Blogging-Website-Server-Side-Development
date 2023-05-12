@@ -58,10 +58,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return response()->view('post.create', ['post' => $post]);
+        return response()->view('post.edit', ['post' => $post]);
     }
     
-
     /**
      * Update the specified resource in storage.
      */ 
@@ -74,8 +73,17 @@ class PostController extends Controller
                 /* Handle database storage failure here... */
                 // e.g. abort(Response::HTTP_INTERNAL_SERVER_ERROR);
             }
-        }
-        
+        } 
         return redirect(to: route('post.show', ['post' => $post->id]));
     }
+    
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Post $post)
+    {
+        $post->delete();
+        return redirect(route('post.index'));
+    }
+    
 }

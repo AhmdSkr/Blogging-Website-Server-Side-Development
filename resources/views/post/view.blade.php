@@ -8,17 +8,4 @@
     <h3>Post Content</h3>
     <p>{{$post->body}}</p>
     <hr/>
-{{-- 
-    <p>{{$post->author}}</p>
-    <p>{{$post->rating}}</p>
-    <ul>
-        @foreach($post->reviews as $review)
-        <li>
-            <h5>    {{$review->writer}}     </h5>
-            <p>     {{$review->comment}}    </p>
-            <p>     {{$review->rating}}     </p>
-        </li>
-        @endforeach
-    </ul>
- --}}
 </x-layout.app>

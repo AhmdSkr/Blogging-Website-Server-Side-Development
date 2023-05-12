@@ -29,7 +29,8 @@ abstract class PostFormRequest extends FormRequest
         return null;
     }
 
-    public function getMinutesToRead() : int {
+    public function getMinutesToRead() : int 
+    {
         return 1;
     }
 
@@ -51,7 +52,8 @@ abstract class PostFormRequest extends FormRequest
     /**
      * Retrieves the post instance submitted through the form request.
      */
-     public final function getPostInstance() : Post {
+     public final function getPostInstance() : Post 
+    {
         if($this->instance === null) {
             $this->instance = $this->createPostInstance();
         }
