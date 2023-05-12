@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Response;
 
 use App\Models\Post;
-use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\UpdatePostRequest;
+use App\Http\Requests\Post\StorePostRequest;
+use App\Http\Requests\Post\UpdatePostRequest;
 
 
 class PostController extends Controller
@@ -53,4 +53,29 @@ class PostController extends Controller
         return response()->view('post.view', ['post' => $post]);
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Post $post)
+    {
+        return response()->view('post.create', ['post' => $post]);
+    }
+    
+
+    /**
+     * Update the specified resource in storage.
+     */ 
+    public function update(UpdatePostRequest $request, Post $post)
+    {
+        $post = $request->getPostInstance();
+        if($post->isDirty()){
+            if(!$post->save())
+            {
+                /* Handle database storage failure here... */
+                // e.g. abort(Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+        }
+        
+        return redirect(to: route('post.show', ['post' => $post->id]));
+    }
 }
