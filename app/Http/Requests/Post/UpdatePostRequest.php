@@ -9,7 +9,7 @@ class UpdatePostRequest extends PostFormRequest
     public function createPostInstance() : Post
     {
         $post = $this->route('post');
-        $attributes = $this->getValidatedUpdates();
+        $attributes = $this->getValidatedData();
         return $post->fill($attributes);
     }
 }

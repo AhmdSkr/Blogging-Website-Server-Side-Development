@@ -34,7 +34,7 @@ abstract class PostFormRequest extends FormRequest
         return 1;
     }
 
-    public function getValidatedUpdates() : array|null
+    public function getValidatedData() : array|null
     {
         $attributes = $this->validated();
         $image = $attributes['image'];

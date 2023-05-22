@@ -8,7 +8,7 @@ class StorePostRequest extends PostFormRequest
 {
     public function createPostInstance() : Post
     {
-        $attributes = $this->getValidatedUpdates();
+        $attributes = $this->getValidatedData();
         return (new Post())->fill($attributes);
     }
     
