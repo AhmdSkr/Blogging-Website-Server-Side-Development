@@ -10,7 +10,7 @@
     </ul>
     <hr/>
     @endif
-    <form action="{{route('post.update', ['post' => $post->id])}}" method="POST">
+    <form action="{{route('post.update', ['post' => $post->id])}}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PATCH')
         <span><b>Title:</b> </span><input name="title" type="text" value="{{$post->title}}"/><br/>

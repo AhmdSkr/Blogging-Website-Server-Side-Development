@@ -8,7 +8,7 @@
     </ul>
     <hr/>
     @endif
-    <form action="{{route('post.store')}}" method="POST">
+    <form action="{{route('post.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <span><b>Title:</b> </span><input name="title" type="text"/><br/>
         <h3><b>Excerpt:</b> </h3><textarea name="excerpt"></textarea><br/>

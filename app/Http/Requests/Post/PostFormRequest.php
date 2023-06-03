@@ -71,7 +71,7 @@ abstract class PostFormRequest extends FormRequest
             'title'     => 'required|filled|string|max:70',
             'excerpt'   => 'nullable|string|max:100',
             'body'      => 'required|filled|string',
-            'image'     => 'nullable|image|size:1024',
+            'image'     => 'nullable|image|max:1024',
         ];
     }
 }
