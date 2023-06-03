@@ -1,4 +1,13 @@
 <x-layout.app>
+    @if($errors->any())
+    <h3>You have entered invalid data</h3>    
+    <ul>
+    @foreach($errors->all() as $error)
+        <li>{{$error}}</li>
+    @endforeach
+    </ul>
+    <hr/>
+    @endif
     <form action="{{route('post.store')}}" method="POST">
         @csrf
         <span><b>Title:</b> </span><input name="title" type="text"/><br/>

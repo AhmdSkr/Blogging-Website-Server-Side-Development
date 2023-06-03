@@ -1,6 +1,15 @@
 <x-layout.app>
     <x-post.delete :$post/>
     <hr/>
+    @if($errors->any())
+    <h3>You have entered invalid data</h3>    
+    <ul>
+    @foreach($errors->all() as $error)
+        <li>{{$error}}</li>
+    @endforeach
+    </ul>
+    <hr/>
+    @endif
     <form action="{{route('post.update', ['post' => $post->id])}}" method="POST">
         @csrf
         @method('PATCH')
