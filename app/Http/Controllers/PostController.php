@@ -12,6 +12,11 @@ use App\Http\Requests\UpdatePostRequest;
 
 class PostController extends Controller
 {
+
+    public function __construct(
+        private FileCollectionService $fileService
+    ) {}
+
     /**
      * Display a listing of the resource.
      */
@@ -40,7 +45,7 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePostRequest $request, FileCollectionService $fileCollect)
+    public function store(StorePostRequest $request)
     {
         $validAttributes = $request->validated();
         $post = new Post();
@@ -50,7 +55,7 @@ class PostController extends Controller
             $result = null;
             if(isset($validAttributes['image']) && $validAttributes['image'] !== null)
             {
-                $result = $fileCollect->upload($validAttributes['image']);
+                $result = $this->fileService->upload($validAttributes['image']);
                 if($result === false)
                 {
                     // TODO: message: failed to uplaod image!
@@ -70,7 +75,7 @@ class PostController extends Controller
             
             if($post->image_url !== null)
             {
-                $fileCollect->remove($post->image_url);
+                $this->fileService->remove($post->image_url);
             }
             abort(Response::HTTP_INTERNAL_SERVER_ERROR,"Unable to upload posted content.");
         }
@@ -92,7 +97,7 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */ 
-    public function update(UpdatePostRequest $request, FileCollectionService $fileService, Post $post)
+    public function update(UpdatePostRequest $request, Post $post)
     {
         $previous_image_url = $post->image_url;
         $current_image_url = null;
@@ -102,17 +107,19 @@ class PostController extends Controller
         {
             if(isset($validAttributes['image']) && $validAttributes['image'] !== null)
             {
-                $current_image_url = $fileService->upload($validAttributes['image']);
+                $current_image_url = $this->fileService->upload($validAttributes['image']);
                 if($current_image_url === false)
                 {
                     // TODO: message: failed to uplaod image!
                     $current_image_url = null;
                     /* Continue uploading post, normally.*/ 
                 }
+                else
+                {
+                    $post->image_url = $current_image_url;
+                }
             }
-            
             $post->fill($validAttributes);
-            if($current_image_url !== null) $post->image_url = $current_image_url;
             $post->minutes_to_read = 1; // TODO: estimate minutes to read
         }
 
@@ -121,17 +128,34 @@ class PostController extends Controller
             if(!$post->save())
             /* Handle database storage failure here... */
             {
-                if($current_image_url !== null) $fileService->remove($current_image_url);
+                $this->fileService->remove($current_image_url);
                 abort(Response::HTTP_INTERNAL_SERVER_ERROR,"Unable to upload posted content.");
             }
             else
             /* Clean up */
             {
-                if($current_image_url !== null) $fileService->remove($previous_image_url);
+                if($current_image_url !== null)
+                {
+                    $this->fileService->remove($previous_image_url);
+                }
             }
         }
 
         return redirect(to: route('post.show', ['post' => $post->id]));
     }
     
+    /**
+     * Destroys the specified resource in storage.
+     */
+    public function destroy(Post $post)
+    {
+        $image_url = $post->image_url;
+        if($post->delete() === false)
+        {
+            abort(Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        $this->fileService->remove($image_url);
+
+        return redirect(to: route("post.index"));
+    }
 }

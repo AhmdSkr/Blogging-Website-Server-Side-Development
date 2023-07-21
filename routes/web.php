@@ -15,4 +15,4 @@ use App\Http\Controllers\PostController;
 |
 */
 
-Route::resource('post', PostController::class)->except('destroy');
+Route::resource('post', PostController::class);
