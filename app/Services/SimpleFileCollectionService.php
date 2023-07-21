@@ -41,6 +41,11 @@ class SimpleFileCollectionService implements FileCollectionService
      */
     public function remove($url): bool
     {
+        if($url === null)
+        {
+            return true;
+        }
+
         if(!$this->isSupportedUrl($url))
         {
             throw new Exception("An unsupported Url has been passed to ".SimpleFileCollectionService::class);
