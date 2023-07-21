@@ -80,4 +80,58 @@ class PostController extends Controller
             status: Response::HTTP_CREATED
         );
     }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Post $post)
+    {
+        return response()->view('post.edit', ['post' => $post]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */ 
+    public function update(UpdatePostRequest $request, FileCollectionService $fileService, Post $post)
+    {
+        $previous_image_url = $post->image_url;
+        $current_image_url = null;
+        $validAttributes = $request->validated();
+        
+        /* filling post model fields */
+        {
+            if(isset($validAttributes['image']) && $validAttributes['image'] !== null)
+            {
+                $current_image_url = $fileService->upload($validAttributes['image']);
+                if($current_image_url === false)
+                {
+                    // TODO: message: failed to uplaod image!
+                    $current_image_url = null;
+                    /* Continue uploading post, normally.*/ 
+                }
+            }
+            
+            $post->fill($validAttributes);
+            if($current_image_url !== null) $post->image_url = $current_image_url;
+            $post->minutes_to_read = 1; // TODO: estimate minutes to read
+        }
+
+        if($post->isDirty())
+        {
+            if(!$post->save())
+            /* Handle database storage failure here... */
+            {
+                if($current_image_url !== null) $fileService->remove($current_image_url);
+                abort(Response::HTTP_INTERNAL_SERVER_ERROR,"Unable to upload posted content.");
+            }
+            else
+            /* Clean up */
+            {
+                if($current_image_url !== null) $fileService->remove($previous_image_url);
+            }
+        }
+
+        return redirect(to: route('post.show', ['post' => $post->id]));
+    }
+    
 }

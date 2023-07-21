@@ -1,4 +1,6 @@
 <x-layout.app>
+    <a href="{{route("post.edit", ['post' => $post->id])}}">edit post</a>
+    <hr/>
     <img src="{{$post->image_url}}"/>
     <h1>{{$post->title}}</h1>
     <p><b>Minutes to Read:</b> {{$post->minutes_to_read}}</p>
