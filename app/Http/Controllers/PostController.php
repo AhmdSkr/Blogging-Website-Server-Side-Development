@@ -53,15 +53,15 @@ class PostController extends Controller
                 $result = $fileCollect->upload($validAttributes['image']);
                 if($result === false)
                 {
-                    // Message: failed to uplaod image!
-                    // Continue uploading post, normally.
+                    // TODO: message: failed to uplaod image!
                     $result = null;
+                    /* Continue uploading post, normally. */
                 }
             }
 
             $post->fill($validAttributes);
             $post->image_url = $result;
-            $post->minutes_to_read = 1;
+            $post->minutes_to_read = 1; // TODO: estimate minutes to read
         }
         
         if(!$post->save())
