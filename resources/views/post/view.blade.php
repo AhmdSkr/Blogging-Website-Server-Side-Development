@@ -1,5 +1,12 @@
 <x-layout.app>
-    <a href="{{route('post.index')}}">< back to index</a>
+    <form action="{{route("post.destroy", ['post' => $post->id])}}" method="POST">
+        @csrf
+        @method('DELETE')
+        
+        <input type="submit" value="delete post"/>
+    </form>
+    <hr/>
+    <a href="{{route("post.edit", ['post' => $post->id])}}">edit post</a>
     <hr/>
     <img src="{{$post->image_url}}"/>
     <h1>{{$post->title}}</h1>

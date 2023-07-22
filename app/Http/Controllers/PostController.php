@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\FileCollectionService;
 use Illuminate\Http\Response;
 
 use App\Models\Post;
-use App\Http\Requests\Post\StorePostRequest;
-use App\Http\Requests\Post\UpdatePostRequest;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 
 
 class PostController extends Controller
 {
+
+    public function __construct(
+        private FileCollectionService $fileService
+    ) {}
+
     /**
      * Display a listing of the resource.
      */
@@ -18,6 +24,14 @@ class PostController extends Controller
     {
         $posts = Post::all();
         return response()->view('post.index', ['posts' => $posts]);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Post $post)
+    {
+        return response()->view('post.view', ['post' => $post]);
     }
 
     /**
@@ -33,24 +47,43 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        $post = $request->getPostInstance();
-        if(!$post->save())
+        $validAttributes = $request->validated();
+        $post = new Post();
+        
+        /* filling post model fields */
         {
-            /* Handle database storage failure here... */
-            // e.g. abort(Response::HTTP_INTERNAL_SERVER_ERROR);
+            $result = null;
+            if(isset($validAttributes['image']) && $validAttributes['image'] !== null)
+            {
+                $result = $this->fileService->upload($validAttributes['image']);
+                if($result === false)
+                {
+                    // TODO: message: failed to uplaod image!
+                    $result = null;
+                    /* Continue uploading post, normally. */
+                }
+            }
+
+            $post->fill($validAttributes);
+            $post->image_url = $result;
+            $post->minutes_to_read = 1; // TODO: estimate minutes to read
         }
+        
+        if(!$post->save())
+        /* Handle database storage failure here... */
+        {
+            
+            if($post->image_url !== null)
+            {
+                $this->fileService->remove($post->image_url);
+            }
+            abort(Response::HTTP_INTERNAL_SERVER_ERROR,"Unable to upload posted content.");
+        }
+        
         return redirect(
             to: route('post.show', ['post' => $post->id]),
             status: Response::HTTP_CREATED
         );
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Post $post)
-    {
-        return response()->view('post.view', ['post' => $post]);
     }
 
     /**
@@ -60,30 +93,88 @@ class PostController extends Controller
     {
         return response()->view('post.edit', ['post' => $post]);
     }
-    
+
     /**
      * Update the specified resource in storage.
      */ 
     public function update(UpdatePostRequest $request, Post $post)
     {
-        $post = $request->getPostInstance();
-        if($post->isDirty()){
-            if(!$post->save())
+        $previous_image_url = $post->image_url;
+        $current_image_url = null;
+        $validAttributes = $request->validated();
+        
+        /* filling post model fields */
+        {
+            if(isset($validAttributes['image']) && $validAttributes['image'] !== null)
             {
-                /* Handle database storage failure here... */
-                // e.g. abort(Response::HTTP_INTERNAL_SERVER_ERROR);
+                $current_image_url = $this->fileService->upload($validAttributes['image']);
+                if($current_image_url === false)
+                {
+                    // TODO: message: failed to uplaod image!
+                    $current_image_url = null;
+                    /* Continue uploading post, normally.*/ 
+                }
+                else
+                {
+                    $post->image_url = $current_image_url;
+                }
             }
-        } 
+            $post->fill($validAttributes);
+            $post->minutes_to_read = 1; // TODO: estimate minutes to read
+        }
+
+        if($post->isDirty())
+        {
+            if(!$post->save())
+            /* Handle database storage failure here... */
+            {
+                $this->fileService->remove($current_image_url);
+                abort(Response::HTTP_INTERNAL_SERVER_ERROR,"Unable to upload posted content.");
+            }
+            else
+            /* Clean up */
+            {
+                if($current_image_url !== null)
+                {
+                    $this->fileService->remove($previous_image_url);
+                }
+            }
+        }
+
         return redirect(to: route('post.show', ['post' => $post->id]));
     }
     
     /**
-     * Remove the specified resource from storage.
+     * Destroys the specified resource in storage.
      */
     public function destroy(Post $post)
     {
-        $post->delete();
-        return redirect(route('post.index'));
+        $image_url = $post->image_url;
+        if($post->delete() === false)
+        {
+            abort(Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        $this->fileService->remove($image_url);
+
+        return redirect(to: route("post.index"));
     }
-    
+
+    /**
+     * Removes cover image of specified post
+     */
+    public function uncover(Post $post)
+    {
+        if(!$this->fileService->remove($post->image_url))
+        {
+            // TODO: handle failure
+            return back();
+        }
+        $post->image_url = null;
+        if(!$post->save())
+        {
+            // TODO:handle failure
+        }
+
+        return redirect(to: route("post.edit", ['post' => $post->id]));
+    }
 }
