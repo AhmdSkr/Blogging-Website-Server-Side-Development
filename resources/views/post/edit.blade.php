@@ -10,10 +10,19 @@
     <hr/>
     @endif
     <hr/>
-    <form action="{{route("post.show", ['post' => $post->id])}}" method="GET">
+    
+    @if($post->image_url !== null)
+    <form action="{{route("post.uncover", ['post' => $post->id])}}" method="POST">
+        @csrf
+        @method("DELETE")
+
         <img src="{{$post->image_url}}"/><br/>
+        
         <input type="submit" value="Remove Cover Image"/>
+
     </form>
+    @endif
+
     <hr/>
     <form action="{{route('post.update', ['post' => $post->id])}}" method="POST" enctype="multipart/form-data">
         @csrf

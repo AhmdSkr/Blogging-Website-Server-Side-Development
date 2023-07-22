@@ -16,3 +16,4 @@ use App\Http\Controllers\PostController;
 */
 
 Route::resource('post', PostController::class);
+Route::delete("post/{post}/uncover",[PostController::class, 'uncover'])->name('post.uncover');

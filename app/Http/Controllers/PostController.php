@@ -158,4 +158,23 @@ class PostController extends Controller
 
         return redirect(to: route("post.index"));
     }
+
+    /**
+     * Removes cover image of specified post
+     */
+    public function uncover(Post $post)
+    {
+        if(!$this->fileService->remove($post->image_url))
+        {
+            // TODO: handle failure
+            return back();
+        }
+        $post->image_url = null;
+        if(!$post->save())
+        {
+            // TODO:handle failure
+        }
+
+        return redirect(to: route("post.edit", ['post' => $post->id]));
+    }
 }
