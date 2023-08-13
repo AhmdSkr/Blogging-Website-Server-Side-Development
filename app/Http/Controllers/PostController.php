@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Blog;
 use App\Services\FileCollectionService;
 use Illuminate\Http\Response;
 
@@ -37,15 +38,15 @@ class PostController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Blog $blog)
     {
-        return response()->view('post.create');
+        return response()->view('post.create', ['blog' => $blog]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePostRequest $request)
+    public function store(StorePostRequest $request, Blog $blog)
     {
         $validAttributes = $request->validated();
         $post = new Post();
@@ -65,6 +66,7 @@ class PostController extends Controller
             }
 
             $post->fill($validAttributes);
+            $post->blog_id = $blog->id;
             $post->image_url = $result;
             $post->minutes_to_read = 1; // TODO: estimate minutes to read
         }
@@ -156,7 +158,7 @@ class PostController extends Controller
         }
         $this->fileService->remove($image_url);
 
-        return redirect(to: route("post.index"));
+        return redirect(to: route("blog.show", ['blog' => $post->blog_id]));
     }
 
     /**

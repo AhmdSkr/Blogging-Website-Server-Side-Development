@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
+use App\Models\Post;
+use App\Models\Blog;
+
 class RouteServiceProvider extends ServiceProvider
 {
     /**
@@ -36,5 +39,8 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
+
+        Route::model('post', Post::class);
+        Route::model('blog', Blog::class);
     }
 }

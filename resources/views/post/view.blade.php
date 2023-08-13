@@ -6,9 +6,11 @@
         <input type="submit" value="delete post"/>
     </form>
     <hr/>
-    <a href="{{route("post.edit", ['post' => $post->id])}}">edit post</a>
-    <hr/>
+    
+    @if($post->image_url !== null)
     <img src="{{$post->image_url}}"/>
+    @endif
+
     <h1>{{$post->title}}</h1>
     <a href="{{route('post.edit', ['post' => $post->id])}}">edit post</a>
     <p><b>Minutes to Read:</b> {{$post->minutes_to_read}}</p>

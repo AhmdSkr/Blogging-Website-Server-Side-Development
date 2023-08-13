@@ -11,7 +11,7 @@
     @endif
     
     <h2><u>Create your own post:</u></h2>
-    <form action="{{route('post.store')}}" method="POST" enctype="multipart/form-data">
+    <form action="{{route('post.store', ['blog' => $blog->id])}}" method="POST" enctype="multipart/form-data">
         @csrf
         <span><b>Title:</b> </span><input name="title" type="text" value="{{old('title')}}"/><br/>
         <h3><b>Excerpt:</b> </h3><textarea name="excerpt">{{old('excerpt')}}</textarea><br/>
