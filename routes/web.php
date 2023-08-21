@@ -31,8 +31,8 @@ Route::controller(BlogController::class)->prefix('blogs')->group(function() {
 Route::controller(PostController::class)->group(function(){
 
     Route::prefix('blogs')->group(function(){
-        Route::get(                     '{blog}/post/create',   'create')           ->name('post.create');
-        Route::post(                    '{blog}/post',          'store')            ->name('post.store');
+        Route::get(                     '{blog}/posts/create',  'create')           ->name('post.create');
+        Route::post(                    '{blog}/posts',         'store')            ->name('post.store');
     });
     
     Route::prefix('posts')->group(function(){

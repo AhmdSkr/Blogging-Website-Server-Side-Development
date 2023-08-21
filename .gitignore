@@ -19,3 +19,5 @@ yarn-error.log
 /.vscode
 database/blogging_database
 *.png
+*.jpg
+*.webp

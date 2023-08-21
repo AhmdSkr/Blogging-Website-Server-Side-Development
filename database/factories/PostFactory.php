@@ -2,14 +2,26 @@
 
 namespace Database\Factories;
 
+use App\Models\Blog;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Post>
  */
 class PostFactory extends Factory
 {
+
+    /**
+     * Indicates to which blog the post(s) belong(s) to
+     */
+    public function withBlog(Blog $blog): Factory
+    {
+        return $this->state(function(array $attributes) use($blog) {
+            return [
+                'blog_id' => $blog->id
+            ];
+        });
+    }
 
     /**
      * Define the model's default state.
@@ -23,7 +35,8 @@ class PostFactory extends Factory
             'excerpt'           =>  fake()->sentence(10),
             'body'              =>  fake()->text(1000),
             'minutes_to_read'   =>  fake()->numberBetween(),
-            'image_url'         =>  null,
+            // 'blog_id'           =>  null,
+            // 'image_url'         =>  null,
         ];
     }
 }

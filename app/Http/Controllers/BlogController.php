@@ -138,10 +138,7 @@ class BlogController extends Controller
                 }
             }
         }
-
-        return $response->to(
-            path: route('blog.show', ['blog' => $blog->id]),
-        );
+        return $response->to(route('blog.show', ['blog' => $blog->id]));
     }
     
     /**
