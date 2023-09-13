@@ -1,24 +1,15 @@
 <x-layout.app>
-    <form action="{{route("post.destroy", ['post' => $post->id])}}" method="POST">
-        @csrf
-        @method('DELETE')
-        
-        <input type="submit" value="delete post"/>
-    </form>
-    <hr/>
-    
-    @if($post->image_url !== null)
-    <img src="{{$post->image_url}}"/>
+    @if(isset($post->target))
+        <h1>Reviewing:</h1>
+        <x-post.card :post="$post->target"/>
     @endif
 
-    <h1>{{$post->title}}</h1>
-    <a href="{{route('post.edit', ['post' => $post->id])}}">edit post</a>
-    <p><b>Minutes to Read:</b> {{$post->minutes_to_read}}</p>
-    <p><b>Excerpt:</b> {{$post->excerpt}}</p>
+    <x-post.delete :post="$post"/>
     <hr/>
-    <h3>Post Content</h3>
-    <p>{{$post->body}}</p>
+    <x-post.view :post="$post"/>
     <hr/>
-    <p><b>Created At:</b> {{$post->created_at}}</p>
-    <p><b>Updated At:</b> {{$post->updated_at}}</p>
+    
+    <h2>Reviews</h2>
+    <a href="{{route('post.personal.create', ['target' => $post->id])}}">Write a review</a>
+    <x-post.collection :posts="$post->reviews"/>
 </x-layout.app>
