@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Blog;
-use App\Services\FileCollectionService;
+
 use Illuminate\Http\Response;
 
 use App\Models\Post;
+use App\Models\Blog;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
-
+use App\Services\FileCollectionService;
 
 class PostController extends Controller
 {
@@ -40,7 +40,19 @@ class PostController extends Controller
      */
     public function create(Blog $blog)
     {
-        return response()->view('post.create', ['blog' => $blog]);
+        $data = [];
+        {/* organizing input */
+            $target = request()->query('target', null);
+            if(isset($target))
+            {
+                $target = Post::query()->findOrFail($target);
+            }
+
+            $data['target'] = $target;
+            $data['blog'] = $blog;
+        }
+        
+        return view('post.create', $data);
     }
 
     /**
@@ -48,11 +60,11 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request, Blog $blog)
     {
-        $validAttributes = $request->validated();
         $post = new Post();
         
-        /* filling post model fields */
-        {
+        {/* filling post model fields */
+            $validAttributes = $request->validated();
+            $target_id = request()->input('target_id', null);
             $result = null;
             if(isset($validAttributes['image']) && $validAttributes['image'] !== null)
             {
@@ -64,9 +76,9 @@ class PostController extends Controller
                     /* Continue uploading post, normally. */
                 }
             }
-
             $post->fill($validAttributes);
-            $post->blog_id = $blog->id;
+            $post->blog_id = $blog?->id;
+            $post->target_id = $target_id;
             $post->image_url = $result;
             $post->minutes_to_read = 1; // TODO: estimate minutes to read
         }
@@ -105,8 +117,8 @@ class PostController extends Controller
         $current_image_url = null;
         $validAttributes = $request->validated();
         
-        /* filling post model fields */
-        {
+        
+        {/* filling post model fields */
             if(isset($validAttributes['image']) && $validAttributes['image'] !== null)
             {
                 $current_image_url = $this->fileService->upload($validAttributes['image']);
@@ -158,7 +170,16 @@ class PostController extends Controller
         }
         $this->fileService->remove($image_url);
 
-        return redirect(to: route("blog.show", ['blog' => $post->blog_id]));
+        $route = null;
+        if(isset($post->blog_id))
+        {
+            $route = route("blog.show", ['blog' => $post->blog_id]);
+        }
+        else
+        {
+            $route = route('post.index');
+        }
+        return redirect(to: $route);
     }
 
     /**

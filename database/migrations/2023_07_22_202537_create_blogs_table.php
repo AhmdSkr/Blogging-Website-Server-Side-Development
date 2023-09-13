@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    const NAME_MAX_LEN = 50;
-    const DESCRIPTION_MAX_LEN = 100;
+    const NAME_MAX_LEN = 64;
+    const DESCRIPTION_MAX_LEN = 256;
     const IMAGE_URL_MAX_LEN = 256;
 
     /**

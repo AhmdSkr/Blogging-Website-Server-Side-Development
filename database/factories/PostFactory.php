@@ -31,12 +31,12 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            'title'             =>  fake()->sentence(),
-            'excerpt'           =>  fake()->sentence(10),
+            'title'             =>  fake()->text(64),
+            'excerpt'           =>  fake()->text(256),
             'body'              =>  fake()->text(1000),
-            'minutes_to_read'   =>  fake()->numberBetween(),
-            // 'blog_id'           =>  null,
-            // 'image_url'         =>  null,
+            'minutes_to_read'   =>  fake()->numberBetween(1,100),
+            'blog_id'           =>  null,
+            'image_url'         =>  null,
         ];
     }
 }

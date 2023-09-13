@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    const TITLE_MAX_LEN = 70;
-    const EXCERPT_MAX_LEN = 100;
+    const TITLE_MAX_LEN = 64;
+    const EXCERPT_MAX_LEN = 256;
     const IMAGE_URL_MAX_LEN = 256;
 
     /**
@@ -17,12 +17,13 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('blog_id');
+
             $table->string('title', static::TITLE_MAX_LEN);
             $table->string('excerpt', static::EXCERPT_MAX_LEN)->nullable();
             $table->text('body');
             $table->unsignedInteger('minutes_to_read');
             $table->string('image_url',static::IMAGE_URL_MAX_LEN)->nullable();
+            
             $table->timestamps();
         });
     }

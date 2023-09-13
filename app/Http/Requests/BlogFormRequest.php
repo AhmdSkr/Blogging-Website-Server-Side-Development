@@ -22,8 +22,8 @@ class BlogFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'          => ['required', 'filled', 'string', 'max:50', 'unique:blogs,name'],
-            'description'   => 'nullable|string|max:100',
+            'name'          => ['required', 'filled', 'string', 'max:64', 'unique:blogs,name'],
+            'description'   => 'nullable|string|max:256',
             'image'         => 'nullable|image|max:2048',
         ];
     }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Post;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class PostFormRequest extends FormRequest
 {
@@ -22,10 +24,11 @@ class PostFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'     => 'required|filled|string|max:70',
-            'excerpt'   => 'nullable|string|max:100',
-            'body'      => 'required|filled|string',
+            'title'     => 'required|filled|string|max:64',
+            'excerpt'   => 'nullable|string|max:256',
+            'body'      => 'required|filled|string|max:65535',
             'image'     => 'nullable|image|max:2048',
+            'target_id' => ['nullable', Rule::exists('posts', 'id')],
         ];
     }
 }
