@@ -95,7 +95,9 @@
         @apply text-2xl text-slate-300;
     };
     
-
+    .uncover-btn {
+        @apply btn btn-square btn-error btn-block rounded-none
+    }
 
     .title-input {
         @apply text-center text-xl;
