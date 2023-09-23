@@ -1,9 +1,12 @@
 @props([ 'blog'])
 
-<div>
-@if($blog->image_url !== null)
-<img src="{{$blog->image_url}}"/>
-@endif
-<a href="{{route('blog.show', ['blog' => $blog->id])}}"><h3>{{$blog->name}}</h3></a>
-<p>{{$blog->description}}</p>
+
+<div {{$attributes->merge(['class' => "basic-card"])}}>
+    @if(isset($blog->image_url))
+    <img src="{{$blog->image_url}}" class="max-w-xs basis-3/12"/>
+    @endif
+    <div class="grow">
+        <a href="{{route('blog.show', ['blog' => $blog->id])}}" class="blog-name-summary">{{$blog->name}}</a>
+        <p class="blog-description-summary">{{$blog->description}}</p>
+    </div>
 </div>

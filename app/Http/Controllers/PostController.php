@@ -23,7 +23,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::query()->paginate(6);
         return response()->view('post.index', ['posts' => $posts]);
     }
 

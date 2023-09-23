@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    h1 {
+        @apply bg-slate-400 p-5;
+        @apply font-serif font-extrabold text-5xl text-center text-slate-900;
+    };
+    h3 {
+        @apply font-serif text-center font-semibold;
+        @apply p-4;
+    };
+    pre, p {
+        @apply p-5 bg-slate-100;
+        @apply font-serif;
+    };
+
+    textarea {
+        @apply w-9/12 m-auto p-1 block border-2 rounded;
+        @apply hover:border-2;
+    };
+    * {
+        @apply font-serif
+    }
+
+};
+
+@layer components {
+    .post-title-summary {
+        @apply bg-slate-800 block p-2;
+        @apply text-xl font-serif font-bold text-slate-400 text-center;
+        @apply hover:hover:text-slate-50;
+    }
+    .post-excerpt-summary {
+        @apply p-3 min-h-fit;
+        @apply text-base font-serif;
+    }
+    .collection-card {
+        @apply m-2;
+    }
+
+    .basic-card {
+        @apply flex max-h-full bg-slate-100 shadow-md;
+    };
+
+    .blog-name-summary {
+        @apply bg-slate-800 block p-2;
+        @apply text-xl font-serif font-bold text-slate-400 text-center;
+        @apply hover:hover:text-slate-50;
+    }
+    .blog-description-summary {
+        @apply p-3 min-h-fit;
+        @apply text-base font-serif;
+    };
+
+    .sidebar-header {
+        @apply bg-slate-500 rounded-md;
+        @apply text-center;
+    };
+    .floating-action-button {
+        @apply fixed right-8 bottom-8;
+        @apply btn;
+    };
+}
