@@ -62,4 +62,16 @@
         @apply fixed right-8 bottom-8;
         @apply btn;
     };
+
+    .floating-action-button-group {
+        @apply fixed bottom-4 right-8 flex flex-col gap-3 max-w-screen-lg m-auto;
+    };
+
+    .document {
+        @apply max-w-screen-lg m-auto;
+    };
+
+    .preview {
+        @apply border-b-4 border-slate-950 overflow-x-scroll;
+    };
 }
