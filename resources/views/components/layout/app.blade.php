@@ -11,6 +11,10 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 </head>
 <body>
+  <main class="min-h-screen">
+    <x-layout.navigation/>
     {{$slot}}
+  </main>
+  <x-layout.footer/>
 </body>
 </html>
