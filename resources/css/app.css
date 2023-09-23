@@ -60,7 +60,6 @@
     };
 
 
-
     .form-error {
         @apply alert alert-error rounded-none;
     };
@@ -70,15 +69,13 @@
     };
 
 
-
     .form-review-portal {
-        @apply md:sm:hidden basis-2/5 m-3 mt-0;
+        @apply basis-2/5 m-3 mt-0;
     };
 
     .form-main-portal {
         @apply basis-3/5 bg-slate-200 mt-0 max-w-screen-lg m-auto;
     };
-
 
 
     .form-main-input {
@@ -87,8 +84,7 @@
 
     .form-meta-input {
         @apply basis-4/12 bg-slate-700 rounded-b-lg p-4;
-    };
- 
+    }; 
 
 
     .meta-input-label {

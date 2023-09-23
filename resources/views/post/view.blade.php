@@ -3,7 +3,7 @@
     {{-- Target View --}}
     @if(isset($post->target))
     <div class="max-w-screen-lg m-auto">
-        <h1>{{__('post.review.label')}}</h1>
+        <h1>Reviewing:</h1>
         <x-post.card :post="$post->target"/>
     </div>
     @endif
