@@ -11,19 +11,60 @@
 @endphp
 
 <x-layout.app>
-    @if(isset($target->id))<x-post.card :post="$target"/>@endif
+    <x-slot:head>
+        <x-head.tinymce-config/>
+    </x-slot>
+    <h1 class="form-header">Create you own Post</h1>
     
-    <x-post.validation :errors/>
+    {{-- Validation --}}
+    <x-post.validation :errors class="border-b-4"/>
 
-    <h2><u>Create your own post:</u></h2>
-    <form action="{{$route}}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @if(isset($target))<input name="target_id" type="hidden" value="{{$target->id}}"/>@endif
-        <span><b>Title:</b> </span><input name="title" type="text" value="{{old('title')}}"/><br/>
-        <h3><b>Excerpt:</b> </h3><textarea name="excerpt">{{old('excerpt')}}</textarea><br/>
-        <h3>Post Content</h3><textarea name="body">{{old('body')}}</textarea><br/>
-        <h3>Cover Image</h3><input name="image" type="file"/><br/>
-        <hr/>
-        <input type="submit" />
-    </form>
+    {{-- Review Here --}}
+    @if(isset($target))
+    <div class="flex">
+        <div class="form-review-portal">
+            <h1>Reviewing Post:</h1>
+            <x-post.view :post="$target"/>
+        </div>
+    @endif
+
+
+
+    <div class="form-main-portal">
+        <form action="{{$route}}" method="POST" enctype="multipart/form-data">
+            @csrf
+            
+            {{-- target specifier --}}
+            @if(isset($target))
+                <input name="target_id" type="hidden" value="{{$target->id}}"/>
+            @endif
+
+            {{-- main input --}}
+            <div class="min-h-screen">
+
+                {{-- Title & Cover --}}
+                <div class="form-meta-input">
+                    {{-- Title input --}}<h3 class="meta-input-label">Title</h3><textarea class="title-input" name="title" maxlength="64" required>{{old('title')}}</textarea>
+                    {{-- Cover Image input --}}<h3 class="meta-input-label">Cover Image</h3><input class="image-input" name="image" type="file"/>
+                </div>
+
+                {{-- Excerpt & Body --}}
+                <div class="form-main-input">
+                    <a href="{{route('post.index')}}" class="btn btn-error">Discard</a>
+                    <input type="submit" class="btn btn-success"/>
+                    
+                    <h3>Excerpt</h3>
+                    <textarea name="excerpt" class="max-h-72" maxlength="256">{{old('excerpt')}}</textarea><br/>
+                    
+                    <h3>Post Content</h3>
+                    <textarea name="body" class="h-96" id="tinyeditor">{{old('body')}}</textarea>
+                </div>
+
+            </div> 
+        </form>
+    </div>
+    
+    @if(isset($target))
+    </div>
+    @endif
 </x-layout.app>

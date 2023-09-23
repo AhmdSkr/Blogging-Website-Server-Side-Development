@@ -58,6 +58,55 @@
         @apply bg-slate-500 rounded-md;
         @apply text-center;
     };
+
+
+
+    .form-error {
+        @apply alert alert-error rounded-none;
+    };
+
+    .form-header {
+        @apply border-slate-950 border-b-4;
+    };
+
+
+
+    .form-review-portal {
+        @apply md:sm:hidden basis-2/5 m-3 mt-0;
+    };
+
+    .form-main-portal {
+        @apply basis-3/5 bg-slate-200 mt-0 max-w-screen-lg m-auto;
+    };
+
+
+
+    .form-main-input {
+        @apply basis-8/12 h-full p-3 pb-10 border-slate-950 border-b-4;
+    };
+
+    .form-meta-input {
+        @apply basis-4/12 bg-slate-700 rounded-b-lg p-4;
+    };
+ 
+
+
+    .meta-input-label {
+        @apply text-2xl text-slate-300;
+    };
+    
+
+
+    .title-input {
+        @apply text-center text-xl;
+        @apply resize-none;
+    };
+
+    .image-input {
+        @apply file-input block m-auto;
+    };
+
+
     .floating-action-button {
         @apply fixed right-8 bottom-8;
         @apply btn;
