@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger(static::CONTAINER_BLOG_FOREIGN_COLUMN)->nullable(true);
 
             $table->foreign(static::CONTAINER_BLOG_FOREIGN_COLUMN, static::CONTAINER_BLOG_FOREIGN_KEY)
-                ->references('id')->on('posts')
+                ->references('id')->on('blogs')
                 ->cascadeOnDelete();
             
             $table->index(static::CONTAINER_BLOG_FOREIGN_COLUMN,  static::CONTAINER_BLOG_INDEX);
