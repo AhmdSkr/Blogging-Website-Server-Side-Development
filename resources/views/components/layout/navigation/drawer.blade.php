@@ -1,11 +1,11 @@
 
 {{-- Drawer main --}}
-<div class="drawer lg:drawer-open">
+<div class="drawer">
 
     <input id="my-drawer" type="checkbox" class="drawer-toggle" />
     
-    <div class="drawer-content flex flex-col items-center justify-center">
-    {{-- Page content HERE --}}{{$slot}}  
+    <div class="drawer-content">
+    {{-- Page content HERE --}}{{$slot}}
     </div> 
   
     <div class="drawer-side">

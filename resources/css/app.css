@@ -119,6 +119,6 @@
     };
 
     .preview {
-        @apply border-b-4 border-slate-950 overflow-x-scroll;
+        @apply border-b-4 border-slate-950 whitespace-pre-wrap;
     };
 }

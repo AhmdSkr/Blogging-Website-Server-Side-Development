@@ -12,8 +12,9 @@
 </head>
 <body>
   <main class="min-h-screen">
-    <x-layout.navigation/>
+    <x-layout.navigation>
     {{$slot}}
+    </x-layout.navigation>
   </main>
   <x-layout.footer/>
 </body>

@@ -47,3 +47,5 @@ Route::controller(PostController::class)->group(function(){
     });
 
 });
+
+Route::redirect('/', '/posts');
